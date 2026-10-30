@@ -1,1 +1,204 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>THAMEEM | Movie Hub</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #090909;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+header {
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  position: sticky;
+  top: 0;
+}
+.logo { color: #ff3030; font-size: 25px; font-weight: bold; }
+nav a { color: white; text-decoration: none; margin-left: 15px; }
+.hero {
+  padding: 65px 7%;
+  background: linear-gradient(90deg,#190707,#351010,#090909);
+}
+.hero h1 { font-size: 42px; margin-bottom: 10px; }
+.hero p { color: #ccc; }
+button {
+  background: #ed2525;
+  border: 0;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+main { padding: 25px 6%; }
+input {
+  width: 100%;
+  padding: 14px;
+  background: #202020;
+  border: 1px solid #444;
+  color: white;
+  border-radius: 6px;
+  margin: 15px 0;
+}
+.filters { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0 25px; }
+.filters button { background: #292929; }
+.filters button.active { background: #ed2525; }
+.movies {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(145px,1fr));
+  gap: 20px;
+}
+.card {
+  background: #181818;
+  border-radius: 9px;
+  overflow: hidden;
+  transition: transform .2s;
+}
+.card:hover { transform: translateY(-5px); }
+.poster {
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  font-size: 23px;
+  font-weight: bold;
+  background: linear-gradient(145deg,#4b1616,#111);
+}
+.card h3 { font-size: 16px; margin: 12px; }
+.card p { color: #aaa; margin: 0 12px 12px; font-size: 13px; }
+.card a {
+  display: block;
+  color: #ff5555;
+  margin: 12px;
+  text-decoration: none;
+  font-size: 14px;
+}
+footer {
+  text-align: center;
+  color: #888;
+  padding: 30px;
+  margin-top: 35px;
+  background: #111;
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">THAMEEM 🎬</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#movies">Movies</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>WELCOME TO THAMEEM</h1>
+  <p>Your world of Hollywood movies and entertainment.</p>
+  <button onclick="document.getElementById('movies').scrollIntoView()">
+    Explore Movies
+  </button>
+</section>
+
+<main id="movies">
+  <h2>🎬 Explore Movies</h2>
+  <input id="search" placeholder="Search your favourite movie...">
+
+  <div class="filters">
+    <button class="active" onclick="filterMovies('All',this)">All</button>
+    <button onclick="filterMovies('Action',this)">Action</button>
+    <button onclick="filterMovies('Sci-Fi',this)">Sci-Fi</button>
+    <button onclick="filterMovies('Adventure',this)">Adventure</button>
+  </div>
+
+  <div class="movies" id="movieList"></div>
+  <p id="empty" style="display:none;color:#aaa;">No movies found.</p>
+</main>
+
+<footer>
+  <h3>THAMEEM 🎬</h3>
+  <p>Made for movie lovers.</p>
+  <p>© 2026 THAMEEM. All rights reserved.</p>
+</footer>
+
+<script>
+const movies = [
+  {name:"Interstellar",genre:"Sci-Fi",year:2014,color:"#253c58"},
+  {name:"Inception",genre:"Action",year:2010,color:"#39404d"},
+  {name:"The Dark Knight",genre:"Action",year:2008,color:"#343434"},
+  {name:"Avatar",genre:"Adventure",year:2009,color:"#12566a"},
+  {name:"Avengers: Endgame",genre:"Action",year:2019,color:"#642e26"},
+  {name:"The Martian",genre:"Sci-Fi",year:2015,color:"#8b3824"},
+  {name:"Dune",genre:"Adventure",year:2021,color:"#80502b"},
+  {name:"Gravity",genre:"Sci-Fi",year:2013,color:"#273e53"}
+];
+
+let category = "All";
+
+function render() {
+  const query = document.getElementById("search").value.toLowerCase();
+  const list = document.getElementById("movieList");
+  list.innerHTML = "";
+
+  const filtered = movies.filter(m =>
+    m.name.toLowerCase().includes(query) &&
+    (category === "All" || m.genre === category)
+  );
+
+  document.getElementById("empty").style.display =
+    filtered.length ? "none" : "block";
+
+  filtered.forEach(m => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const poster = document.createElement("div");
+    poster.className = "poster";
+    poster.style.background =
+      `linear-gradient(145deg,${m.color},#101010)`;
+    poster.textContent = m.name;
+
+    const title = document.createElement("h3");
+    title.textContent = m.name;
+
+    const info = document.createElement("p");
+    info.textContent = `${m.year} • ${m.genre}`;
+
+    const link = document.createElement("a");
+    link.textContent = "▶ Find Trailer";
+    link.href = "https://www.youtube.com/results?search_query=" +
+      encodeURIComponent(m.name + " official trailer");
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+
+    card.append(poster,title,info,link);
+    list.appendChild(card);
+  });
+}
+
+function filterMovies(value,button) {
+  category = value;
+  document.querySelectorAll(".filters button").forEach(b =>
+    b.classList.remove("active")
+  );
+  button.classList.add("active");
+  render();
+}
+
+document.getElementById("search").addEventListener("input",render);
+render();
+</script>
+
+</body>
+</html>
+
