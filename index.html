@@ -344,8 +344,83 @@ function filterMovies(value,button) {
 
 document.getElementById("search").addEventListener("input",render);
 render();
+const imdbTop50 = [
+  "The Shawshank Redemption",
+  "The Godfather",
+  "The Dark Knight",
+  "The Godfather Part II",
+  "12 Angry Men",
+  "The Lord of the Rings: The Return of the King",
+  "Schindler's List",
+  "The Lord of the Rings: The Fellowship of the Ring",
+  "Pulp Fiction",
+  "The Lord of the Rings: The Two Towers",
+  "The Good, the Bad and the Ugly",
+  "Forrest Gump",
+  "Fight Club",
+  "Inception",
+  "The Empire Strikes Back",
+  "The Matrix",
+  "Interstellar",
+  "GoodFellas",
+  "One Flew Over the Cuckoo's Nest",
+  "Seven",
+  "It's a Wonderful Life",
+  "The Silence of the Lambs",
+  "Saving Private Ryan",
+  "Seven Samurai",
+  "The Green Mile",
+  "City of God",
+  "Life Is Beautiful",
+  "Terminator 2: Judgment Day",
+  "Back to the Future",
+  "Star Wars",
+  "Kill Bill: The Whole Bloody Affair",
+  "Spirited Away",
+  "Gladiator",
+  "The Pianist",
+  "Parasite",
+  "Grave of the Fireflies",
+  "Harakiri",
+  "Psycho",
+  "The Lion King",
+  "The Departed",
+  "Whiplash",
+  "The Prestige",
+  "American History X",
+  "Spider-Man: Across the Spider-Verse",
+  "Léon: The Professional",
+  "Cinema Paradiso",
+  "Casablanca",
+  "The Intouchables",
+  "The Usual Suspects",
+  "Django Unchained"
+];
+
+function surpriseMovie() {
+  const index = Math.floor(Math.random() * imdbTop50.length);
+  const movie = imdbTop50[index];
+
+  document.getElementById("surprise-result").innerHTML = `
+    <h3>🎬 ${movie}</h3>
+    <p>🏆 IMDb Top 250 — Top 50 selection</p>
+    <a href="https://www.imdb.com/chart/top/" target="_blank">
+      View IMDb Chart
+    </a>
+  `;
+}
 </script>
 
+<section id="surprise">
+  <h2>🎲 Surprise Me!</h2>
+  <p>Can't decide what to watch? Let THAMEEM choose!</p>
+
+  <button onclick="surpriseMovie()">
+    🎬 Surprise Me
+  </button>
+
+  <div id="surprise-result"></div>
+</section>
 </body>
 </html>
 
